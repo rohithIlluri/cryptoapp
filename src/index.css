@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base HTML reset */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  background: #111928; /* Dark theme base color similar to TradingView */
+  color: #d1d5db; /* Light gray text for better readability */
+  font-family: 'Arial', sans-serif; /* TradingView uses a clean sans-serif font */
+}
+
+#root {
+  height: 100%;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Glassmorphism effects with TradingView-inspired tweaks */
+.glass {
+  background: rgba(17, 25, 40, 0.85); /* Darker base for contrast */
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border */
+}
+
+.glass-card {
+  background: rgba(31, 41, 55, 0.9); /* Slightly darker for cards */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(148, 163, 184, 0.05); /* Very subtle border */
+  border-radius: 8px; /* Rounded corners like TradingView */
+}
+
+/* Custom scrollbar with TradingView style */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(17, 25, 40, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563; /* Slate gray for thumb */
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* Lighter slate on hover */
+}
+
+/* Smooth transitions for all interactive elements */
+.transition-smooth {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom focus styles */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* Blue focus ring */
+  border-radius: 4px;
+}
+
+/* TradingView-inspired custom styles */
+.text-trading-white {
+  color: #f3f4f6; /* Near-white text */
+}
+
+.bg-trading-dark {
+  background: #1f2937; /* Dark panel background */
+}
+
+.border-trading {
+  border-color: #374151; /* Darker border for panels */
+}
+
+.rounded-trading {
+  border-radius: 6px; /* Consistent rounding */
+}
+
+.shadow-trading {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06); /* Subtle shadow */
+}
+
+.news-card {
+  @apply glass-card p-3 text-sm h-20 flex flex-col justify-between;
+  max-width: 300px; /* Control news card width */
+  min-height: 80px; /* Ensure minimum height */
+}
+
+.news-card h3 {
+  @apply text-white font-medium line-clamp-2;
+  font-size: 0.875rem; /* Smaller font for compactness */
+}
+
+.news-card .meta {
+  @apply text-xs text-gray-400 flex justify-between;
+}
+
+.stat-round {
+  @apply glass-card flex items-center justify-center text-center p-4;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* Perfect circle */
+}
+
+.table-trading {
+  @apply bg-trading-dark border-trading rounded-trading overflow-hidden;
+}
+
+.table-trading th {
+  @apply text-left py-2 px-4 text-xs font-semibold text-gray-400 uppercase;
+}
+
+.table-trading td {
+  @apply py-2 px-4 text-sm border-t border-trading;
+}
+
+.chart-container {
+  @apply bg-trading-dark rounded-trading p-4;
+}
+
+.btn-trading {
+  @apply px-3 py-1 text-sm font-medium rounded-md transition-colors;
+  background-color: #1f2937;
+  color: #9ca3af;
+}
+
+.btn-trading:hover {
+  background-color: #374151;
+  color: #f3f4f6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+  .news-card {
+    max-width: 100%;
+  }
+  .stat-round {
+    width: 100px;
+    height: 100px;
+  }
+}

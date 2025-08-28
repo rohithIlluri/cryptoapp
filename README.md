@@ -1,70 +1,147 @@
-# Getting Started with Create React App
+# CryptoPulse - Cryptocurrency Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive cryptocurrency dashboard built with React and Tailwind CSS, featuring real-time market data, charts, and news.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **Real-time Market Data** - Live cryptocurrency prices and market statistics
+- **Interactive Charts** - Price history charts with multiple timeframes
+- **Market Overview** - Global market cap, volume, and dominance breakdown
+- **Coin Details** - Comprehensive information for individual cryptocurrencies
+- **Latest News** - Crypto news from reliable sources
+- **Responsive Design** - Mobile-first design with smooth animations
+- **Dark Theme** - TradingView-inspired dark theme for better readability
 
-### `npm start`
+## 🏗️ Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+src/
+├── components/
+│   ├── common/           # Reusable components
+│   │   ├── ErrorDisplay.js
+│   │   └── Skeletons.js
+│   ├── layout/           # Layout components
+│   │   ├── Sidebar.js
+│   │   └── Header.js
+│   ├── pages/            # Page components
+│   │   ├── HomePage.js
+│   │   ├── CryptocurrenciesPage.js
+│   │   ├── NewsPage.js
+│   │   └── CryptoDetailsPage.js
+│   ├── ui/               # UI components
+│   │   ├── StatCard.js
+│   │   ├── CryptoCard.js
+│   │   └── NewsCard.js
+│   └── index.js          # Component exports
+├── services/
+│   └── api.js            # API service functions
+├── utils/
+│   └── formatters.js     # Utility functions
+├── hooks/                 # Custom React hooks
+├── contexts/              # React contexts
+├── types/                 # TypeScript types (if using TS)
+├── App.js                 # Main app component
+└── index.js               # App entry point
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 🧩 Components Breakdown
 
-### `npm test`
+### Common Components
+- **ErrorDisplay** - Consistent error message display
+- **Skeletons** - Loading state components for better UX
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### UI Components
+- **StatCard** - Statistics display with icons and change indicators
+- **CryptoCard** - Cryptocurrency information cards
+- **NewsCard** - News article display with images
 
-### `npm run build`
+### Layout Components
+- **Sidebar** - Navigation sidebar with active states
+- **Header** - Mobile header with menu toggle
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Page Components
+- **HomePage** - Dashboard with market overview and trending coins
+- **CryptocurrenciesPage** - Table view of all cryptocurrencies
+- **NewsPage** - Latest crypto news display
+- **CryptoDetailsPage** - Detailed coin information with charts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Technologies Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **React 17** - UI framework
+- **Tailwind CSS** - Utility-first CSS framework
+- **Recharts** - Chart library for data visualization
+- **Lucide React** - Icon library
+- **CoinGecko API** - Cryptocurrency data
+- **CryptoCompare API** - News data
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Start development server:**
+   ```bash
+   npm start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+3. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 📱 Responsive Design
 
-## Learn More
+The application is built with a mobile-first approach:
+- **Mobile**: Stacked layout with collapsible sidebar
+- **Tablet**: Side-by-side layout with fixed sidebar
+- **Desktop**: Full layout with enhanced spacing and features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🎨 Design System
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Color Scheme**: Dark theme with teal accents
+- **Typography**: Clean, readable fonts with proper hierarchy
+- **Spacing**: Consistent spacing using Tailwind's scale
+- **Animations**: Smooth transitions and hover effects
+- **Shadows**: Subtle shadows for depth and hierarchy
 
-### Code Splitting
+## 🔧 Customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Adding New Components
+1. Create component in appropriate folder
+2. Export from `src/components/index.js`
+3. Import and use in your pages
 
-### Analyzing the Bundle Size
+### Styling
+- Use Tailwind CSS classes for consistent styling
+- Follow the established color scheme and spacing
+- Maintain responsive design principles
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### API Integration
+- Add new API functions in `src/services/api.js`
+- Use the established error handling patterns
+- Follow the data transformation conventions
 
-### Making a Progressive Web App
+## 📈 Future Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- [ ] Portfolio tracking
+- [ ] Price alerts
+- [ ] Advanced charting tools
+- [ ] Social features
+- [ ] Mobile app
+- [ ] Real-time notifications
+- [ ] Advanced filtering and sorting
+- [ ] Export functionality
 
-### Advanced Configuration
+## 🤝 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Follow the established folder structure
+2. Use consistent naming conventions
+3. Maintain responsive design principles
+4. Add proper error handling
+5. Include loading states for better UX
 
-### Deployment
+## 📄 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.

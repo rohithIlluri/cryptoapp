@@ -1,52 +1,69 @@
-import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import { Layout, Typography, Space } from 'antd';
+import React, { useState } from 'react';
+import Sidebar from './components/layout/Sidebar';
+import Header from './components/layout/Header';
+import HomePage from './components/pages/HomePage';
+import CryptocurrenciesPage from './components/pages/CryptocurrenciesPage';
+import NewsPage from './components/pages/NewsPage';
+import CryptoDetailsPage from './components/pages/CryptoDetailsPage';
 
-import { Exchanges, Homepage, News, Cryptocurrencies, CryptoDetails, Navbar } from './components';
-import './App.css';
+function App() {
+  const [activePage, setActivePage] = useState('home');
+  const [selectedCoinId, setSelectedCoinId] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-const App = () => (
-  <div className="app">
-    <div className="navbar">
-      <Navbar />
+  const navigateTo = (page) => {
+    setActivePage(page);
+    setSelectedCoinId(null);
+    setIsSidebarOpen(false);
+  };
+
+  const handleCoinClick = (coinId) => {
+    setSelectedCoinId(coinId);
+    setActivePage('crypto-details');
+  };
+
+  const renderPage = () => {
+    if (activePage === 'crypto-details' && selectedCoinId) {
+      return <CryptoDetailsPage coinId={selectedCoinId} />;
+    }
+    
+    switch (activePage) {
+      case 'home':
+        return <HomePage onCoinClick={handleCoinClick} onShowMoreClick={navigateTo} />;
+      case 'cryptocurrencies':
+        return <CryptocurrenciesPage onCoinClick={handleCoinClick} />;
+      case 'news':
+        return <NewsPage />;
+      default:
+        return <HomePage onCoinClick={handleCoinClick} onShowMoreClick={navigateTo} />;
+    }
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-gray-200 min-h-screen font-sans flex">
+      {/* Sidebar */}
+      <Sidebar 
+        activePage={activePage}
+        onNavigate={navigateTo}
+        isSidebarOpen={isSidebarOpen}
+        onCloseSidebar={() => setIsSidebarOpen(false)}
+      />
+
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-30 md:hidden" 
+          onClick={() => setIsSidebarOpen(false)} 
+        />
+      )}
+
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto">
+        <Header onOpenSidebar={() => setIsSidebarOpen(true)} />
+        {renderPage()}
+      </main>
     </div>
-    <div className="main">
-      <Layout>
-        <div className="routes">
-          <Switch>
-            <Route exact path="/">
-              <Homepage />
-            </Route>
-            <Route exact path="/exchanges">
-              <Exchanges />
-            </Route>
-            <Route exact path="/cryptocurrencies">
-              <Cryptocurrencies />
-            </Route>
-            <Route exact path="/crypto/:coinId">
-              <CryptoDetails />
-            </Route>
-            <Route exact path="/news">
-              <News />
-            </Route>
-          </Switch>
-        </div>
-      </Layout>
-      <div className="footer">
-        <Typography.Title level={5} style={{ color: 'white', textAlign: 'center' }}>Copyright © 2021
-          <Link to="/">
-            Cryptoverse Inc.
-          </Link> <br />
-          All Rights Reserved.
-        </Typography.Title>
-        <Space>
-          <Link to="/">Home</Link>
-          <Link to="/exchanges">Exchanges</Link>
-          <Link to="/news">News</Link>
-        </Space>
-      </div>
-    </div>
-  </div>
-);
+  );
+}
 
 export default App;
