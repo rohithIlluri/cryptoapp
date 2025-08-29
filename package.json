@@ -14,9 +14,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "build:css": "tailwindcss -i ./src/index.css -o ./src/tailwind-output.css --watch",
-    "start": "npm run build:css & NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
-    "build": "tailwindcss -i ./src/index.css -o ./src/tailwind-output.css && react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,10 +36,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2"
   }
 }
