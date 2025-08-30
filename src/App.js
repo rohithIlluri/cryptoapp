@@ -19,6 +19,16 @@ function formatPct(value) {
   return `${sign}${value.toFixed(2)}%`;
 }
 
+// Heuristic stablecoin filter and usefulness screening
+const STABLE_SYMBOLS = new Set(['usdt','usdc','busd','dai','tusd','usdd','gusd','lusd','susd','frax','ustc','eurt','usdp','fei','mim']);
+function filterUsefulCoin(c) {
+  if (!c) return false;
+  const sym = (c.symbol || '').toLowerCase();
+  if (STABLE_SYMBOLS.has(sym)) return false;
+  if ((c.market_cap || 0) < 5_000_000) return false; // tiny caps are noisy
+  return true;
+}
+
 function useAsync(asyncFn, deps = []) {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -116,7 +126,11 @@ function Overview({ onSelectCoin }) {
 
       <div className="row" style={{ justifyContent: 'space-between', marginTop: 16 }}>
         <h2 className="card-title" style={{ margin: 0 }}>Top Movers</h2>
-        <button className="tab" onClick={() => onSelectCoin(coins?.[Math.floor(Math.random()*Math.max(1, coins?.length||1))]?.id)}>Random Coin</button>
+        <button className="tab" onClick={() => {
+          const filtered = (coins||[]).filter(filterUsefulCoin);
+          const pick = filtered[Math.floor(Math.random()*Math.max(1, filtered.length||1))];
+          if (pick) onSelectCoin(pick.id);
+        }}>Random Coin</button>
       </div>
 
       {coinsLoad ? (
@@ -133,6 +147,7 @@ function Overview({ onSelectCoin }) {
             </div>
             <div className="grid cols-3">
               {[...(coins || [])]
+                .filter(filterUsefulCoin)
                 .filter((c) => typeof c.price_change_percentage_24h === 'number')
                 .sort((a, b) => (b.price_change_percentage_24h) - (a.price_change_percentage_24h))
                 .slice(0, 6)
@@ -169,6 +184,7 @@ function Overview({ onSelectCoin }) {
             </div>
             <div className="grid cols-3">
               {[...(coins || [])]
+                .filter(filterUsefulCoin)
                 .filter((c) => typeof c.price_change_percentage_24h === 'number')
                 .sort((a, b) => (a.price_change_percentage_24h) - (b.price_change_percentage_24h))
                 .slice(0, 6)
@@ -408,9 +424,15 @@ function DashboardNews() {
 function Details({ coinId }) {
   const { data, error, loading } = useAsync(async () => fetchCoinDetails(coinId), [coinId]);
   const [range, setRange] = useState('7');
+  const [interval, setInterval] = useState('');
+  useEffect(() => {
+    // CoinGecko market_chart only supports interval=daily (no hourly). Use daily for >= 30d, omit otherwise.
+    if (range === '30' || range === '90' || range === '180' || range === '365' || range === 'max') setInterval('daily');
+    else setInterval('');
+  }, [range]);
   const { data: history, error: histErr, loading: histLoad } = useAsync(
-    async () => fetchCoinHistory(coinId, range),
-    [coinId, range]
+    async () => fetchCoinHistory(coinId, range, interval),
+    [coinId, range, interval]
   );
   if (!coinId) return null;
         return (
@@ -456,14 +478,14 @@ function Details({ coinId }) {
 
           <div className="toolbar" style={{ marginTop: 12 }}>
             <div className="muted">Price (USD)</div>
-            <div className="row" style={{ gap: 6 }}>
+            <div className="row" style={{ gap: 6, flexWrap: 'wrap' }}>
               {['1','7','30','90','180','365','max'].map((r) => (
                 <button key={r} className={`tab ${range === r ? 'active' : ''}`} onClick={() => setRange(r)}>{r === '1' ? '1D' : r === '7' ? '7D' : r === '30' ? '1M' : r === '90' ? '3M' : r === '180' ? '6M' : r === '365' ? '1Y' : 'MAX'}</button>
               ))}
             </div>
           </div>
 
-          <div style={{ width: '100%', height: 280 }}>
+          <div style={{ width: '100%', height: 320 }}>
             {histLoad ? (
               <div className="skeleton" style={{ width: '100%', height: '100%', borderRadius: 8 }} />
             ) : histErr ? (
@@ -475,7 +497,10 @@ function Details({ coinId }) {
                   margin={{ top: 8, right: 12, left: 0, bottom: 0 }}
                 >
                   <CartesianGrid stroke="#f3f4f6" vertical={false} />
-                  <XAxis dataKey="t" tickFormatter={(t) => new Date(t).toLocaleDateString()} minTickGap={56} stroke="#9ca3af" />
+                  <XAxis dataKey="t" tickFormatter={(t) => {
+                    const d = new Date(t);
+                    return (range === '1' || range === '7') ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString();
+                  }} minTickGap={56} stroke="#9ca3af" />
                   <YAxis tickFormatter={(v) => `$${Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(v)}`} width={64} stroke="#9ca3af" />
                   <Tooltip
                     labelFormatter={(t) => new Date(t).toLocaleString()}
@@ -527,11 +552,11 @@ export default function App() {
       {showModal && (
         <div className="modal-backdrop" onClick={() => setShowModal(false)}>
           <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
-            <div className="row" style={{ justifyContent: 'space-between', padding: 12, borderBottom: '1px solid var(--border)' }}>
+            <div className="row" style={{ justifyContent: 'space-between', padding: 14, borderBottom: '1px solid var(--border)', background: '#fff', position: 'sticky', top: 0, zIndex: 1 }}>
               <div className="card-title" style={{ margin: 0 }}>Coin Details</div>
               <button className="btn" onClick={() => setShowModal(false)}>Close</button>
             </div>
-            <div style={{ padding: 16 }}>
+            <div style={{ padding: 18, background: '#fff' }}>
               <Details coinId={detailsId} />
             </div>
           </div>
