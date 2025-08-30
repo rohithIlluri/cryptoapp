@@ -34,8 +34,31 @@ export const fetchCoinDetails = async (coinId) => {
   return response.json();
 };
 
-export const fetchCoinHistory = async (coinId, days) => {
-  const response = await fetch(`${COINGECKO_API_URL}/coins/${coinId}/market_chart?vs_currency=usd&days=${days === 'max' ? 'max' : days}`);
-  if (!response.ok) throw new Error('Failed to fetch coin history');
-  return response.json();
+export const fetchCoinHistory = async (coinId, days, interval) => {
+  const safeId = encodeURIComponent(coinId);
+  const safeDays = days === 'max' ? 'max' : encodeURIComponent(String(days));
+  const base = `${COINGECKO_API_URL}/coins/${safeId}/market_chart?vs_currency=usd&days=${safeDays}`;
+
+  const tryFetch = async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`History fetch failed: ${res.status}`);
+    return res.json();
+  };
+
+  // Prefer daily when requested; fall back to default cadence on any failure
+  if (interval === 'daily') {
+    try {
+      return await tryFetch(`${base}&interval=daily`);
+    } catch (_) {
+      // fallback without interval
+      return await tryFetch(base);
+    }
+  }
+  // No interval requested
+  try {
+    return await tryFetch(base);
+  } catch (_) {
+    // last resort: try daily
+    return await tryFetch(`${base}&interval=daily`);
+  }
 };

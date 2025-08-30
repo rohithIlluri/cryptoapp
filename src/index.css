@@ -113,8 +113,9 @@ input, select { font: inherit; }
 .spark { width: 100%; height: 36px; }
 
 /* Modal */
-.modal-backdrop { position: fixed; inset: 0; background: rgba(17,24,39,0.5); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; padding: 20px; }
-.modal-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: min(980px, 100%); max-height: 88vh; overflow: auto; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(17,24,39,0.82); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 60; }
+.modal-panel { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; width: min(980px, 100%); max-height: 88vh; overflow: auto; box-shadow: 0 24px 72px rgba(0,0,0,.28); }
+.modal-panel .card { background: #ffffff; border-color: var(--border); box-shadow: 0 12px 40px rgba(0,0,0,.12); }
 
 /* News cards */
 .media { width: 100%; height: 140px; object-fit: cover; border-radius: 10px; }
