@@ -3,8 +3,6 @@ import useAsync from '../../hooks/useAsync';
 import { fetchNews } from '../../services/api';
 import { formatTimeAgo } from '../../utils/formatters';
 
-import ReactMemo from 'react';
-
 function NewsList({ items }) {
   return (
     <div className="grid cols-3">
