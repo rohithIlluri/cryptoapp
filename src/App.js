@@ -4,7 +4,6 @@ import Overview from './components/pages/Overview';
 import Coins from './components/pages/Coins';
 import News from './components/pages/News';
 import DashboardNews from './components/pages/DashboardNews';
-import ReactLazy from 'react';
 const Details = React.lazy(() => import('./components/pages/Details'));
 
 
@@ -28,9 +27,6 @@ export default function App() {
         {tab === 'overview' && (
           <>
             <Overview onSelectCoin={(id) => openDetails(id)} />
-            <div className="row" style={{ justifyContent: 'space-between', marginTop: 16 }}>
-              
-            </div>
             <DashboardNews />
           </>
         )}

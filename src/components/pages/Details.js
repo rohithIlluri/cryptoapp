@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useAsync from '../../hooks/useAsync';
 import { fetchCoinDetails, fetchCoinHistory } from '../../services/api';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
@@ -8,16 +8,18 @@ import { formatUSD, formatPct } from '../../utils/formatters';
 export default function Details({ coinId }) {
   const { data, error, loading } = useAsync(async () => fetchCoinDetails(coinId), [coinId]);
   const [range, setRange] = useState('7');
-  const [interval, setInterval] = useState('');
+  const [debouncedRange, setDebouncedRange] = useState('7');
   useEffect(() => {
-    if (range === '30' || range === '90' || range === '180' || range === '365' || range === 'max') setInterval('daily');
-    else setInterval('');
+    const t = setTimeout(() => setDebouncedRange(range), 300);
+    return () => clearTimeout(t);
   }, [range]);
+  const samplingInterval = useMemo(() => (['30','90','180','365','max'].includes(debouncedRange) ? 'daily' : ''), [debouncedRange]);
   const { data: history, error: histErr, loading: histLoad } = useAsync(
-    async () => fetchCoinHistory(coinId, range, interval),
-    [coinId, range, interval]
+    async () => fetchCoinHistory(coinId, debouncedRange, samplingInterval),
+    [coinId, debouncedRange, samplingInterval]
   );
   if (!coinId) return null;
+  const hasSeries = Array.isArray(history?.prices) && history.prices.length > 1;
   return (
     <div className="container">
       {loading ? (
@@ -73,6 +75,8 @@ export default function Details({ coinId }) {
               <div className="skeleton" style={{ width: '100%', height: '100%', borderRadius: 8 }} />
             ) : histErr ? (
               <div className="error">{String(histErr.message || histErr)}</div>
+            ) : !hasSeries ? (
+              <div className="muted" style={{ padding: 12 }}>No chart data available for this period.</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -82,7 +86,7 @@ export default function Details({ coinId }) {
                   <CartesianGrid stroke="#f3f4f6" vertical={false} />
                   <XAxis dataKey="t" tickFormatter={(t) => {
                     const d = new Date(t);
-                    return (range === '1' || range === '7') ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString();
+                    return (debouncedRange === '1' || debouncedRange === '7') ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString();
                   }} minTickGap={56} stroke="#9ca3af" />
                   <YAxis tickFormatter={(v) => `$${Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 2 }).format(v)}`} width={64} stroke="#9ca3af" />
                   <Tooltip

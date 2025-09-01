@@ -2,8 +2,6 @@ import React from 'react';
 import { ResponsiveContainer, LineChart, Line, Tooltip } from 'recharts';
 import { formatUSD } from '../../utils/formatters';
 
-import ReactMemo from 'react';
-
 function SparklineBase({ data, stroke = '#111827' }) {
   if (!Array.isArray(data) || data.length === 0) return <div className="skeleton" style={{ height: 40 }} />;
   const points = data.map((y, i) => ({ i, y }));

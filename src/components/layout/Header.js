@@ -17,7 +17,7 @@ export default function Header({ active, onChange }) {
   return (
     <header className="header">
       <div className="header-inner container">
-        <div className="brand">Cryptoverse</div>
+        <div className="brand">Chain Stream</div>
         <nav className="tabs" role="tablist" aria-label="Primary">
           {tabs.map((t, i) => (
             <button
