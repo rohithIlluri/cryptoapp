@@ -1,4 +1,4 @@
-# CryptoPulse - Cryptocurrency Dashboard
+# Cryptocurrency Dashboard
 
 A modern, responsive cryptocurrency dashboard built with React and Tailwind CSS, featuring real-time market data, charts, and news.
 
@@ -43,27 +43,6 @@ src/
 ├── App.js                 # Main app component
 └── index.js               # App entry point
 ```
-
-## 🧩 Components Breakdown
-
-### Common Components
-- **ErrorDisplay** - Consistent error message display
-- **Skeletons** - Loading state components for better UX
-
-### UI Components
-- **StatCard** - Statistics display with icons and change indicators
-- **CryptoCard** - Cryptocurrency information cards
-- **NewsCard** - News article display with images
-
-### Layout Components
-- **Sidebar** - Navigation sidebar with active states
-- **Header** - Mobile header with menu toggle
-
-### Page Components
-- **HomePage** - Dashboard with market overview and trending coins
-- **CryptocurrenciesPage** - Table view of all cryptocurrencies
-- **NewsPage** - Latest crypto news display
-- **CryptoDetailsPage** - Detailed coin information with charts
 
 ## 🛠️ Technologies Used
 
